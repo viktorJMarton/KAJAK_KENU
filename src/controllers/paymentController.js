@@ -1,6 +1,7 @@
 const Payment = require('../models/Payment');
 const Reservation = require('../models/Reservation');
 const { sanitizeString, isValidObjectId } = require('../utils/validation');
+const { PAYMENT_STATUSES, PAYMENT_METHODS } = require('../config/constants');
 
 // @desc    Create new payment
 // @route   POST /api/payments
@@ -66,20 +67,18 @@ exports.getPayments = async (req, res, next) => {
     const { status, paymentMethod, startDate, endDate } = req.query;
     let query = {};
 
-    // Filter by status - sanitize input
+    // Filter by status - sanitize and validate input
     if (status) {
       const sanitizedStatus = sanitizeString(status);
-      const validStatuses = ['pending', 'completed', 'failed', 'refunded'];
-      if (validStatuses.includes(sanitizedStatus)) {
+      if (PAYMENT_STATUSES.includes(sanitizedStatus)) {
         query.status = sanitizedStatus;
       }
     }
 
-    // Filter by payment method - sanitize input
+    // Filter by payment method - sanitize and validate input
     if (paymentMethod) {
       const sanitizedMethod = sanitizeString(paymentMethod);
-      const validMethods = ['cash', 'card', 'bank_transfer', 'online'];
-      if (validMethods.includes(sanitizedMethod)) {
+      if (PAYMENT_METHODS.includes(sanitizedMethod)) {
         query.paymentMethod = sanitizedMethod;
       }
     }

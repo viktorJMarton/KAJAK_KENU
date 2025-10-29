@@ -2,6 +2,8 @@
  * Input validation utilities
  */
 
+const mongoose = require('mongoose');
+
 // Sanitize query parameters to prevent NoSQL injection
 exports.sanitizeQuery = (query) => {
   const sanitized = {};
@@ -24,9 +26,9 @@ exports.sanitizeQuery = (query) => {
   return sanitized;
 };
 
-// Validate ObjectId format
+// Validate ObjectId format using Mongoose's built-in validation
 exports.isValidObjectId = (id) => {
-  return /^[0-9a-fA-F]{24}$/.test(id);
+  return mongoose.Types.ObjectId.isValid(id);
 };
 
 // Sanitize string input
@@ -36,3 +38,4 @@ exports.sanitizeString = (str) => {
   // Remove potential MongoDB operators
   return str.replace(/^\$/, '');
 };
+

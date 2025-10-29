@@ -1,6 +1,7 @@
 const Reservation = require('../models/Reservation');
 const Equipment = require('../models/Equipment');
 const { sanitizeString, isValidObjectId } = require('../utils/validation');
+const { RESERVATION_STATUSES } = require('../config/constants');
 
 // @desc    Create new reservation
 // @route   POST /api/reservations
@@ -70,11 +71,10 @@ exports.getReservations = async (req, res, next) => {
     const { status, startDate, endDate } = req.query;
     let query = {};
 
-    // Filter by status - sanitize input
+    // Filter by status - sanitize and validate input
     if (status) {
       const sanitizedStatus = sanitizeString(status);
-      const validStatuses = ['pending', 'confirmed', 'cancelled', 'completed'];
-      if (validStatuses.includes(sanitizedStatus)) {
+      if (RESERVATION_STATUSES.includes(sanitizedStatus)) {
         query.status = sanitizedStatus;
       }
     }
