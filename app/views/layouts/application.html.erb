@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html data-theme="light">
+  <head>
+    <title>Kajak Kenu - Boat Tours & Reservations</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+    <%= stylesheet_link_tag "tailwind", "inter-font", "data-turbo-track": "reload" %>
+    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+  </head>
+
+  <body>
+    <div class="navbar bg-base-100 shadow-lg">
+      <div class="flex-1">
+        <%= link_to "Kajak Kenu", root_path, class: "btn btn-ghost text-xl" %>
+      </div>
+      <div class="flex-none">
+        <ul class="menu menu-horizontal px-1">
+          <li><%= link_to "Tours", boat_tours_path %></li>
+          <li><%= link_to "Admin", admin_reservations_path %></li>
+        </ul>
+      </div>
+    </div>
+
+    <main class="container mx-auto mt-8 px-5">
+      <% if flash[:notice] %>
+        <div class="alert alert-success mb-4">
+          <span><%= flash[:notice] %></span>
+        </div>
+      <% end %>
+      <% if flash[:alert] %>
+        <div class="alert alert-error mb-4">
+          <span><%= flash[:alert] %></span>
+        </div>
+      <% end %>
+      
+      <%= yield %>
+    </main>
+  </body>
+</html>

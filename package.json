@@ -1,0 +1,19 @@
+{
+  "name": "kajak_kenu",
+  "version": "1.0.0",
+  "description": "A Ruby on Rails MVC web application for managing boat tours and reservations. Built with SOLID principles, Clean Code practices, RESTful architecture, and Test-Driven Development (TDD).",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib",
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "daisyui": "^5.3.10"
+  }
+}
