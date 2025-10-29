@@ -1,5 +1,6 @@
 const Admin = require('../models/Admin');
 const { sendTokenResponse } = require('../utils/auth');
+const { sanitizeString } = require('../utils/validation');
 
 // @desc    Register a new admin
 // @route   POST /api/admins/register
@@ -40,8 +41,11 @@ exports.login = async (req, res, next) => {
       });
     }
 
+    // Sanitize input to prevent NoSQL injection
+    const sanitizedEmail = sanitizeString(email);
+
     // Check for admin (include password)
-    const admin = await Admin.findOne({ email }).select('+password');
+    const admin = await Admin.findOne({ email: sanitizedEmail }).select('+password');
 
     if (!admin) {
       return res.status(401).json({

@@ -1,4 +1,5 @@
 const Equipment = require('../models/Equipment');
+const { sanitizeString } = require('../utils/validation');
 
 // @desc    Create new equipment
 // @route   POST /api/equipment
@@ -33,9 +34,12 @@ exports.getEquipment = async (req, res, next) => {
     const { type, isAvailable } = req.query;
     let query = {};
 
-    // Filter by type
+    // Filter by type - sanitize input
     if (type) {
-      query.type = type;
+      const sanitizedType = sanitizeString(type);
+      if (sanitizedType === 'kayak' || sanitizedType === 'canoe') {
+        query.type = sanitizedType;
+      }
     }
 
     // Filter by availability

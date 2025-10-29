@@ -1,5 +1,6 @@
 const Payment = require('../models/Payment');
 const Reservation = require('../models/Reservation');
+const { sanitizeString, isValidObjectId } = require('../utils/validation');
 
 // @desc    Create new payment
 // @route   POST /api/payments
@@ -7,6 +8,14 @@ const Reservation = require('../models/Reservation');
 exports.createPayment = async (req, res, next) => {
   try {
     const { reservation, amount, paymentMethod, transactionId, notes } = req.body;
+
+    // Validate ObjectId format
+    if (!isValidObjectId(reservation)) {
+      return res.status(400).json({
+        success: false,
+        message: 'Invalid reservation ID format'
+      });
+    }
 
     // Validate reservation exists
     const reservationExists = await Reservation.findById(reservation);
@@ -57,14 +66,22 @@ exports.getPayments = async (req, res, next) => {
     const { status, paymentMethod, startDate, endDate } = req.query;
     let query = {};
 
-    // Filter by status
+    // Filter by status - sanitize input
     if (status) {
-      query.status = status;
+      const sanitizedStatus = sanitizeString(status);
+      const validStatuses = ['pending', 'completed', 'failed', 'refunded'];
+      if (validStatuses.includes(sanitizedStatus)) {
+        query.status = sanitizedStatus;
+      }
     }
 
-    // Filter by payment method
+    // Filter by payment method - sanitize input
     if (paymentMethod) {
-      query.paymentMethod = paymentMethod;
+      const sanitizedMethod = sanitizeString(paymentMethod);
+      const validMethods = ['cash', 'card', 'bank_transfer', 'online'];
+      if (validMethods.includes(sanitizedMethod)) {
+        query.paymentMethod = sanitizedMethod;
+      }
     }
 
     // Filter by date range

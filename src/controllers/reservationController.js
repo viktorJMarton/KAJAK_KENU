@@ -1,5 +1,6 @@
 const Reservation = require('../models/Reservation');
 const Equipment = require('../models/Equipment');
+const { sanitizeString, isValidObjectId } = require('../utils/validation');
 
 // @desc    Create new reservation
 // @route   POST /api/reservations
@@ -8,8 +9,17 @@ exports.createReservation = async (req, res, next) => {
   try {
     const { customerName, customerEmail, customerPhone, equipment, startDate, endDate, notes } = req.body;
 
+    // Validate equipment ObjectId format
+    const equipmentId = equipment._id || equipment;
+    if (!isValidObjectId(equipmentId)) {
+      return res.status(400).json({
+        success: false,
+        message: 'Invalid equipment ID format'
+      });
+    }
+
     // Validate equipment
-    const equipmentExists = await Equipment.findById(equipment._id || equipment);
+    const equipmentExists = await Equipment.findById(equipmentId);
     if (!equipmentExists) {
       return res.status(404).json({
         success: false,
@@ -60,9 +70,13 @@ exports.getReservations = async (req, res, next) => {
     const { status, startDate, endDate } = req.query;
     let query = {};
 
-    // Filter by status
+    // Filter by status - sanitize input
     if (status) {
-      query.status = status;
+      const sanitizedStatus = sanitizeString(status);
+      const validStatuses = ['pending', 'confirmed', 'cancelled', 'completed'];
+      if (validStatuses.includes(sanitizedStatus)) {
+        query.status = sanitizedStatus;
+      }
     }
 
     // Filter by date range
