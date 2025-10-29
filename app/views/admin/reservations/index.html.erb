@@ -1,0 +1,138 @@
+<div class="container mx-auto">
+  <h1 class="text-4xl font-bold mb-8">Admin - Manage Reservations</h1>
+
+  <!-- Tabs for filtering reservations -->
+  <div role="tablist" class="tabs tabs-lifted mb-6">
+    <input type="radio" name="my_tabs" role="tab" class="tab" aria-label="Pending" checked />
+    <div role="tabpanel" class="tab-content bg-base-100 border-base-300 rounded-box p-6">
+      <h2 class="text-2xl font-semibold mb-4">Pending Reservations</h2>
+      <% if @pending_reservations.any? %>
+        <div class="overflow-x-auto">
+          <table class="table table-zebra w-full">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Boat Tour</th>
+                <th>Customer</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>People</th>
+                <th>Date</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @pending_reservations.each do |reservation| %>
+                <tr>
+                  <td><%= reservation.id %></td>
+                  <td><%= reservation.boat_tour.name %></td>
+                  <td><%= reservation.customer_name %></td>
+                  <td><%= reservation.customer_email %></td>
+                  <td><%= reservation.customer_phone %></td>
+                  <td><%= reservation.number_of_people %></td>
+                  <td><%= reservation.reservation_date.strftime('%b %d, %Y') %></td>
+                  <td><span class="badge badge-warning"><%= reservation.status.capitalize %></span></td>
+                  <td class="space-x-2">
+                    <%= button_to "Confirm", confirm_admin_reservation_path(reservation), method: :patch, class: "btn btn-success btn-sm" %>
+                    <%= button_to "Cancel", cancel_admin_reservation_path(reservation), method: :patch, class: "btn btn-error btn-sm" %>
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      <% else %>
+        <div class="alert alert-info">
+          <span>No pending reservations</span>
+        </div>
+      <% end %>
+    </div>
+
+    <input type="radio" name="my_tabs" role="tab" class="tab" aria-label="Confirmed" />
+    <div role="tabpanel" class="tab-content bg-base-100 border-base-300 rounded-box p-6">
+      <h2 class="text-2xl font-semibold mb-4">Confirmed Reservations</h2>
+      <% if @confirmed_reservations.any? %>
+        <div class="overflow-x-auto">
+          <table class="table table-zebra w-full">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Boat Tour</th>
+                <th>Customer</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>People</th>
+                <th>Date</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @confirmed_reservations.each do |reservation| %>
+                <tr>
+                  <td><%= reservation.id %></td>
+                  <td><%= reservation.boat_tour.name %></td>
+                  <td><%= reservation.customer_name %></td>
+                  <td><%= reservation.customer_email %></td>
+                  <td><%= reservation.customer_phone %></td>
+                  <td><%= reservation.number_of_people %></td>
+                  <td><%= reservation.reservation_date.strftime('%b %d, %Y') %></td>
+                  <td><span class="badge badge-success"><%= reservation.status.capitalize %></span></td>
+                  <td>
+                    <%= button_to "Cancel", cancel_admin_reservation_path(reservation), method: :patch, class: "btn btn-error btn-sm" %>
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      <% else %>
+        <div class="alert alert-info">
+          <span>No confirmed reservations</span>
+        </div>
+      <% end %>
+    </div>
+
+    <input type="radio" name="my_tabs" role="tab" class="tab" aria-label="Cancelled" />
+    <div role="tabpanel" class="tab-content bg-base-100 border-base-300 rounded-box p-6">
+      <h2 class="text-2xl font-semibold mb-4">Cancelled Reservations</h2>
+      <% if @cancelled_reservations.any? %>
+        <div class="overflow-x-auto">
+          <table class="table table-zebra w-full">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Boat Tour</th>
+                <th>Customer</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>People</th>
+                <th>Date</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @cancelled_reservations.each do |reservation| %>
+                <tr>
+                  <td><%= reservation.id %></td>
+                  <td><%= reservation.boat_tour.name %></td>
+                  <td><%= reservation.customer_name %></td>
+                  <td><%= reservation.customer_email %></td>
+                  <td><%= reservation.customer_phone %></td>
+                  <td><%= reservation.number_of_people %></td>
+                  <td><%= reservation.reservation_date.strftime('%b %d, %Y') %></td>
+                  <td><span class="badge badge-error"><%= reservation.status.capitalize %></span></td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      <% else %>
+        <div class="alert alert-info">
+          <span>No cancelled reservations</span>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

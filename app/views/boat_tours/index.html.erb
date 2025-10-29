@@ -1,0 +1,48 @@
+<div class="container mx-auto">
+  <div class="text-center mb-8">
+    <h1 class="text-4xl font-bold mb-4">Available Boat Tours</h1>
+    <p class="text-lg text-gray-600">Explore our exciting kayak and canoe adventures</p>
+  </div>
+
+  <% if @boat_tours.any? %>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <% @boat_tours.each do |tour| %>
+        <div class="card bg-base-100 shadow-xl">
+          <div class="card-body">
+            <h2 class="card-title"><%= tour.name %></h2>
+            <p><%= tour.description %></p>
+            
+            <div class="divider"></div>
+            
+            <div class="space-y-2">
+              <div class="flex items-center">
+                <span class="font-semibold mr-2">Duration:</span>
+                <span><%= tour.duration %> minutes</span>
+              </div>
+              <div class="flex items-center">
+                <span class="font-semibold mr-2">Capacity:</span>
+                <span><%= tour.capacity %> people</span>
+              </div>
+              <div class="flex items-center">
+                <span class="font-semibold mr-2">Price:</span>
+                <span class="text-2xl font-bold text-primary">$<%= tour.price %></span>
+              </div>
+              <div class="flex items-center">
+                <span class="font-semibold mr-2">Available:</span>
+                <span><%= tour.available_from.strftime('%b %d, %Y') %> - <%= tour.available_to.strftime('%b %d, %Y') %></span>
+              </div>
+            </div>
+
+            <div class="card-actions justify-end mt-4">
+              <%= link_to "View Details & Book", boat_tour_path(tour), class: "btn btn-primary" %>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  <% else %>
+    <div class="alert alert-info">
+      <span>No boat tours available at the moment. Please check back later!</span>
+    </div>
+  <% end %>
+</div>

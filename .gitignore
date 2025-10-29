@@ -1,0 +1,52 @@
+# Ignore bundler config and installed gems
+/.bundle
+/vendor/bundle
+
+# Ignore all logfiles and tempfiles
+/log/*
+/tmp/*
+!/log/.keep
+!/tmp/.keep
+
+# Ignore pidfiles, but keep the directory
+/tmp/pids/*
+!/tmp/pids/.keep
+
+# Ignore storage files
+/storage/*
+!/storage/.keep
+/tmp/storage/*
+!/tmp/storage/.keep
+
+# Ignore master key for decrypting credentials
+/config/master.key
+
+# Ignore assets
+/public/assets
+/app/assets/builds/*
+!/app/assets/builds/.keep
+
+# Ignore database files
+*.sqlite3
+*.sqlite3-*
+
+# Ignore test coverage reports
+/coverage
+
+# Ignore node modules
+/node_modules
+
+# Ignore IDE and editor files
+.vscode
+.idea
+*.swp
+*.swo
+*~
+
+# Ignore OS files
+.DS_Store
+Thumbs.db
+
+# Ignore environment variables
+.env
+.env.local
